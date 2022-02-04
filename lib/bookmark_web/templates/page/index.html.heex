@@ -7,11 +7,13 @@
         <th>url</th>
         <th>code</th>
       </tr>
-      <tr>
-        <th><%= @bookmark.id %></th>
-        <th><%= @bookmark.url %></th>
-        <th><%= link("#{@bookmark.code}", to: URI.parse("#{@bookmark.url}")) %></th>
-      </tr>
-      </table>
-    </article>
-  </section>
+      <%= for b <- @bookmark do %>
+        <tr>
+          <th><%= b.id %></th>
+          <th><%= b.url %></th>
+          <th><%= link("#{b.code}", to: URI.parse("#{b.url}")) %></th>
+        </tr>
+      <% end %>
+    </table>
+  </article>
+</section>

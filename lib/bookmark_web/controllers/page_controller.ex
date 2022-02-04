@@ -8,7 +8,7 @@ defmodule BookmarkWeb.PageController do
     render(
       conn,
       "index.html",
-      bookmark: Repo.get(Shortcode, 1)
+      bookmark: Repo.all(from b in Shortcode)
       )
   end
 end
