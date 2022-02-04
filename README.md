@@ -1,5 +1,14 @@
 # Bookmark
 
+make proj with db that stores bookmark, code, url, name
+
+index action looks up shortcode from the route
+
+build form to save url to db
+
+user auth
+
+
 To start your Phoenix server:
 
   * Install dependencies with `mix deps.get`
