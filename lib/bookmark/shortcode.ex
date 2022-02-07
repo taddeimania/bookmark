@@ -13,7 +13,7 @@ defmodule Bookmark.Shortcode do
   @doc false
   def changeset(shortcode, attrs) do
     shortcode
-    |> cast(attrs, [:title, :code, :url])
-    |> validate_required([:title, :code, :url])
+    |> cast(attrs, [:code, :url])
+    |> validate_required([:code, :url])
   end
 end

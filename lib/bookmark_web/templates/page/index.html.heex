@@ -4,13 +4,11 @@
     <h2>Bookmarks</h2>
     <table>
       <tr>
-        <th>ID</th>
         <th>url</th>
         <th>code</th>
       </tr>
       <%= for b <- @bookmark do %>
         <tr>
-          <th><%= b.id %></th>
           <th><%= b.url %></th>
           <th><%= link("#{b.code}", to: URI.parse("#{b.url}")) %></th>
         </tr>
@@ -21,20 +19,14 @@
 <section>
   <div class="container">
     <%= form_for @conn, Routes.page_path(@conn, :create), fn f -> %>
-    <div class="row">
-      <div class="col">
-        <%= text_input f, :title, placeholder: "title" %>
-      </div>
+
       <div class="col">
         <%= text_input f, :url, placeholder: "url" %>
       </div>
-      <div class="col">
-        <%= text_input f, :code, placeholder: "code" %>
-      </div>
+
       <div class="col">
         <%= submit "Launch Torpedos!" %>
       </div>
-    </div>
   <% end %>
 </div>
 </section>

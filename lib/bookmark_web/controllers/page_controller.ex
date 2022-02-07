@@ -1,6 +1,6 @@
 defmodule BookmarkWeb.PageController do
   use BookmarkWeb, :controller
-  alias Bookmark.{Repo, Shortcode}
+  alias Bookmark.{Repo, Shortcode, CodeGenerator}
   import Ecto.Query
 
 
@@ -15,14 +15,13 @@ defmodule BookmarkWeb.PageController do
   def create(conn, params) do
     IO.inspect(params)
 
+    code = CodeGenerator.generate()
+    IO.inspect(code)
     %Shortcode{}
-    |> Shortcode.changeset(%{"title" => params["title"], "url" => params["url"], "code" => params["code"]})
+    |> Shortcode.changeset(%{"url" => params["url"], "code" => code})
     |> Repo.insert()
 
-    render(
-      conn,
-      "index.html",
-      bookmark: Repo.all(from b in Shortcode)
-    )
+
+    redirect(conn, to: Routes.page_path(conn, :index))
   end
 end
