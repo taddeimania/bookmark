@@ -22,7 +22,8 @@ defmodule BookmarkWeb.Router do
 
     get "/", PageController, :index
     post "/", PageController, :create
-    get "pages/:page", PageController, :redirector
+    get "/pages/:page", PageController, :redirector
+    post "/delete/:to_be_deleted", PageController, :delete
   end
 
   # Other scopes may use custom stacks.

@@ -8,9 +8,10 @@ make proj with db that stores bookmark, code, url, name
 
 ~~User can copy shortcode url and browser will redirect~~
 
-user auth
+~~user auth~~
 
-Delete button for index view
+~~Delete button for index view~~
+  scoped by user
 
 Ability for a user to set a bookmark as public/private
 

@@ -11,6 +11,14 @@ defmodule BookmarkWeb.PageController do
     )
   end
 
+  def delete(conn, params) do
+    query = Repo.get_by(Shortcode, id: params["to_be_deleted"])
+    Repo.delete(query)
+
+    redirect(conn, to: Routes.page_path(conn, :index))
+
+  end
+
   def create(conn, params) do
     code = Helpers.generate()
 
