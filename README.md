@@ -2,13 +2,13 @@
 
 make proj with db that stores bookmark, code, url, name
 
-index action looks up shortcode from the route
+~~index action looks up shortcode from the route~~
 
-build form to save url to db
+~~build form to save url to db~~
+
+~~User can copy shortcode url and browser will redirect~~
 
 user auth
-
-User can copy shortcode url and browser will redirect
 
 Delete button for index view
 
