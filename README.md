@@ -8,6 +8,26 @@ build form to save url to db
 
 user auth
 
+User can copy shortcode url and browser will redirect
+
+Delete button for index view
+
+Ability for a user to set a bookmark as public/private
+
+A list page showing all of the most recent bookmarks (like a feed)
+
+A list page showing the top 20 most popular links calculated by clicks
+
+A details page for a bookmark so a user can see what kind of analytics exist for a bookmark. (How many times it's been clicked mostly, maybe even a time series breakdown of popular times of day it's used)
+
+Ability to archive a bookmark. An archived bookmark can no longer have it's shortcode link be used, but analytics are visible.
+
+Ability to deactivate a bookmark temporarily, and reactive a deactivated bookmark.
+
+Ability to "copy to clipboard" javascript button. (mega difficulty)
+
+Ability to invalidate a short code and generate a new one for a bookmark. Analytics pages can show usages based on shortcodes.
+
 
 To start your Phoenix server:
 
