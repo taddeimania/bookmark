@@ -7,6 +7,7 @@ defmodule Bookmark.Shortcode do
     field :title, :string
     field :url, :string
     field :created_by, :integer
+    field :private, :boolean
 
     timestamps()
   end
@@ -14,7 +15,7 @@ defmodule Bookmark.Shortcode do
   @doc false
   def changeset(shortcode, attrs) do
     shortcode
-    |> cast(attrs, [:code, :url, :created_by])
-    |> validate_required([:code, :url, :created_by])
+    |> cast(attrs, [:code, :url, :created_by, :private])
+    |> validate_required([:code, :url, :created_by, :private])
   end
 end

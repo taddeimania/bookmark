@@ -28,13 +28,17 @@ defmodule BookmarkWeb.PageController do
   end
 
   def create(conn, params) do
-    IO.inspect(conn.assigns.current_user.id, label: "user id")
 
     code = Helpers.generate()
     user_id = conn.assigns.current_user.id
 
     %Shortcode{}
-    |> Shortcode.changeset(%{"url" => params["url"], "code" => code, "created_by" => user_id})
+    |> Shortcode.changeset(%{
+      "url" => params["url"],
+      "code" => code,
+      "created_by" => user_id,
+      "private" => true
+    })
     |> Repo.insert()
 
     redirect(conn, to: Routes.page_path(conn, :index))
@@ -43,5 +47,28 @@ defmodule BookmarkWeb.PageController do
   def redirector(conn, params) do
     url = Helpers.code_to_url(params["page"])
     redirect(conn, external: url.url)
+  end
+
+  def toggle_privates(conn, params) do
+    record = Repo.get(Shortcode, params["shortcode_id"])
+
+    if record.private do
+      Ecto.Changeset.change(record, %{
+        url: record.url,
+        code: record.code,
+        created_by: record.created_by,
+        private: false
+      })
+    else
+      Ecto.Changeset.change(record, %{
+        url: record.url,
+        code: record.code,
+        created_by: record.created_by,
+        private: true
+      })
+    end
+    |> Repo.update()
+
+    redirect(conn, to: Routes.page_path(conn, :index))
   end
 end

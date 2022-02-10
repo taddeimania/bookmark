@@ -5,6 +5,5 @@ defmodule Bookmark.Repo.Migrations.ShortcodesAddCreatedByColumn do
     alter table("shortcodes") do
       add :created_by, :integer
     end
-
   end
 end

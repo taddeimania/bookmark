@@ -10,27 +10,29 @@
       </tr>
       <%= for b <- @bookmark do %>
         <tr>
+          <%# <th><%= button("Private", to: "/privacy_setting", method: :post, class: "btn") %>
+          <th><%= form_for @conn, Routes.page_path(@conn, :toggle_privates, b.id), fn _f -> %>
+            <%= submit do: "Privatize" %>
+          <% end %></th>
           <th><%= b.url %></th>
           <th><%= link("#{b.code}", to: URI.parse("#{b.url}")) %></th>
           <th><%= form_for @conn, Routes.page_path(@conn, :delete, b.id), fn _f -> %>
-  <%= submit do: "Delete" %>
-<% end %></th>
-        </tr>
-      <% end %>
-    </table>
-  </article>
+            <%= submit do: "Delete" %>
+          <% end %></th>
+      </tr>
+    <% end %>
+  </table>
+</article>
 </section>
 <section>
   <div class="container">
     <%= form_for @conn, Routes.page_path(@conn, :create), fn f -> %>
-
-      <div class="col">
-        <%= url_input f, :url, placeholder: "url" %>
-      </div>
-
-      <div class="col">
-        <%= submit "Launch Torpedos!" %>
-      </div>
+    <div class="col">
+      <%= url_input f, :url, placeholder: "url" %>
+    </div>
+    <div class="col">
+      <%= submit "Launch Torpedos!" %>
+    </div>
   <% end %>
 </div>
 </section>

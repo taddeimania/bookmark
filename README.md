@@ -11,7 +11,8 @@ make proj with db that stores bookmark, code, url, name
 ~~user auth~~
 
 ~~Delete button for index view~~
-  scoped by user
+  ~~scoped by user~~
+  guard against nil user
 
 Ability for a user to set a bookmark as public/private
 
