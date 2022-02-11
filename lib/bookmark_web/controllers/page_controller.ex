@@ -11,6 +11,13 @@ defmodule BookmarkWeb.PageController do
     )
   end
 
+  def delete(conn,_params) when (conn.assigns.current_user |> is_nil()) do
+    # redirect(conn, to: Routes.page_path(conn, :index))
+    conn
+      |> put_flash(:error, "Don't touch that you non-logged in user, you.")
+      |> redirect(to: "/")
+  end
+
   def delete(conn, params) do
     user_id = conn.assigns.current_user.id
     ptbd = Repo.get(Shortcode, params["to_be_deleted"])
@@ -20,11 +27,17 @@ defmodule BookmarkWeb.PageController do
       Repo.delete(query)
     else
       conn
-      |> put_flash(:error, "Don't touch that it's not yours to delete.")
+      |> put_flash(:error, "Don't touch that it's somebody elses bookmark.")
       |> redirect(to: "/")
     end
 
     redirect(conn, to: Routes.page_path(conn, :index))
+  end
+
+  def create(conn,_params) when (conn.assigns.current_user |> is_nil()) do
+    conn
+      |> put_flash(:error, "Gotta log in to do that.")
+      |> redirect(to: "/")
   end
 
   def create(conn, params) do
@@ -47,6 +60,12 @@ defmodule BookmarkWeb.PageController do
   def redirector(conn, params) do
     url = Helpers.code_to_url(params["page"])
     redirect(conn, external: url.url)
+  end
+
+  def toggle_privates(conn,_params) when (conn.assigns.current_user |> is_nil()) do
+    conn
+      |> put_flash(:error, "Gotta log in to do that.")
+      |> redirect(to: "/")
   end
 
   def toggle_privates(conn, params) do

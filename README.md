@@ -12,9 +12,11 @@ make proj with db that stores bookmark, code, url, name
 
 ~~Delete button for index view~~
   ~~scoped by user~~
-  guard against nil user
+  ~~guard against nil user~~
 
-Ability for a user to set a bookmark as public/private
+  what does a non logged in user see, only public bookmarks?
+
+~~Ability for a user to set a bookmark as public/private~~
 
 A list page showing all of the most recent bookmarks (like a feed)
 

@@ -10,18 +10,26 @@
       </tr>
       <%= for b <- @bookmark do %>
         <tr>
-          <%# <th><%= button("Private", to: "/privacy_setting", method: :post, class: "btn") %>
-          <th><%= form_for @conn, Routes.page_path(@conn, :toggle_privates, b.id), fn _f -> %>
-            <%= submit do: "Privatize" %>
-          <% end %></th>
-          <th><%= b.url %></th>
-          <th><%= link("#{b.code}", to: URI.parse("#{b.url}")) %></th>
-          <th><%= form_for @conn, Routes.page_path(@conn, :delete, b.id), fn _f -> %>
-            <%= submit do: "Delete" %>
-          <% end %></th>
-      </tr>
-    <% end %>
-  </table>
+          <th>
+            <%= if b.private do %>
+              <%= form_for @conn, Routes.page_path(@conn, :toggle_privates, b.id), fn _f -> %>
+              <%= submit do: "Privatize" %>
+            <% end %>
+          <% else %>
+            <%= form_for @conn, Routes.page_path(@conn, :toggle_privates, b.id), fn _f -> %>
+            <%= submit do: "Unprivatize" %>
+          <% end %>
+        <% end %>
+      </th>
+      <th><%= b.url %></th>
+      <th><%= link("#{b.code}", to: URI.parse("#{b.url}")) %></th>
+      <th><%= form_for @conn, Routes.page_path(@conn, :delete, b.id), fn _f -> %>
+        <%= submit do: "Delete" %>
+      <% end %>
+    </th>
+  </tr>
+<% end %>
+</table>
 </article>
 </section>
 <section>
