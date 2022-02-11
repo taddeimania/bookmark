@@ -1,0 +1,20 @@
+<%# <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" rel="stylesheet"/> <!--- This line is just linking the bootstrap thingie in the file. The real thing starts below --> %>
+<section class="row">
+  <article class="column">
+    <h2>Simply Bookmarkery</h2>
+    <h4>Handcrafted Awesomeness</h4>
+    <p>Log in for all the features</p>
+    <table>
+      <tr>
+        <th>url</th>
+        <th>code</th>
+      </tr>
+      <%= for b <- @bookmark do %>
+        <tr>
+          <th><%= b.url %></th>
+          <th><%= link("#{b.code}", to: URI.parse("#{b.url}")) %></th>
+        </tr>
+      <% end %>
+    </table>
+  </article>
+</section>

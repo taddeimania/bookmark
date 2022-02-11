@@ -3,6 +3,15 @@ defmodule BookmarkWeb.PageController do
   alias Bookmark.{Repo, Shortcode, Helpers}
   import Ecto.Query
 
+  def index(conn, _params) when conn.assigns.current_user |> is_nil() do
+
+    render(
+      conn,
+      "nonlogged_index.html",
+      bookmark: Repo.all(from b in Shortcode, where: b.private == false)
+    )
+  end
+
   def index(conn, _params) do
     render(
       conn,
@@ -11,11 +20,11 @@ defmodule BookmarkWeb.PageController do
     )
   end
 
-  def delete(conn,_params) when (conn.assigns.current_user |> is_nil()) do
-    # redirect(conn, to: Routes.page_path(conn, :index))
+#do i need to guard against nonlogged users now that the template doesn't show delete/private options?
+  def delete(conn, _params) when conn.assigns.current_user |> is_nil() do
     conn
-      |> put_flash(:error, "Don't touch that you non-logged in user, you.")
-      |> redirect(to: "/")
+    |> put_flash(:error, "Don't touch that you non-logged in user, you.")
+    |> redirect(to: "/")
   end
 
   def delete(conn, params) do
@@ -34,14 +43,13 @@ defmodule BookmarkWeb.PageController do
     redirect(conn, to: Routes.page_path(conn, :index))
   end
 
-  def create(conn,_params) when (conn.assigns.current_user |> is_nil()) do
+  def create(conn, _params) when conn.assigns.current_user |> is_nil() do
     conn
-      |> put_flash(:error, "Gotta log in to do that.")
-      |> redirect(to: "/")
+    |> put_flash(:error, "Gotta log in to do that.")
+    |> redirect(to: "/")
   end
 
   def create(conn, params) do
-
     code = Helpers.generate()
     user_id = conn.assigns.current_user.id
 
@@ -62,10 +70,10 @@ defmodule BookmarkWeb.PageController do
     redirect(conn, external: url.url)
   end
 
-  def toggle_privates(conn,_params) when (conn.assigns.current_user |> is_nil()) do
+  def toggle_privates(conn, _params) when conn.assigns.current_user |> is_nil() do
     conn
-      |> put_flash(:error, "Gotta log in to do that.")
-      |> redirect(to: "/")
+    |> put_flash(:error, "Gotta log in to do that.")
+    |> redirect(to: "/")
   end
 
   def toggle_privates(conn, params) do
@@ -79,6 +87,7 @@ defmodule BookmarkWeb.PageController do
         private: false
       })
     else
+
       Ecto.Changeset.change(record, %{
         url: record.url,
         code: record.code,

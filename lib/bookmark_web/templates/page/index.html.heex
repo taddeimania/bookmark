@@ -13,24 +13,25 @@
           <th>
             <%= if b.private do %>
               <%= form_for @conn, Routes.page_path(@conn, :toggle_privates, b.id), fn _f -> %>
-              <%= submit do: "Privatize" %>
+                <%= submit do: "Public-ize" %>
+              <% end %>
+            <% else %>
+              <%= form_for @conn, Routes.page_path(@conn, :toggle_privates, b.id), fn _f -> %>
+                <%= submit do: "Privatize" %>
+              <% end %>
             <% end %>
-          <% else %>
-            <%= form_for @conn, Routes.page_path(@conn, :toggle_privates, b.id), fn _f -> %>
-            <%= submit do: "Unprivatize" %>
-          <% end %>
-        <% end %>
-      </th>
-      <th><%= b.url %></th>
-      <th><%= link("#{b.code}", to: URI.parse("#{b.url}")) %></th>
-      <th><%= form_for @conn, Routes.page_path(@conn, :delete, b.id), fn _f -> %>
-        <%= submit do: "Delete" %>
+          </th>
+          <th><%= b.url %></th>
+          <th><%= link("#{b.code}", to: URI.parse("#{b.url}")) %></th>
+          <th>
+            <%= form_for @conn, Routes.page_path(@conn, :delete, b.id), fn _f -> %>
+              <%= submit do: "Delete" %>
+            <% end %>
+          </th>
+        </tr>
       <% end %>
-    </th>
-  </tr>
-<% end %>
-</table>
-</article>
+    </table>
+  </article>
 </section>
 <section>
   <div class="container">
