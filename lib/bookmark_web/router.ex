@@ -26,6 +26,8 @@ defmodule BookmarkWeb.Router do
     post "/delete/:to_be_deleted", PageController, :delete
     post "/privacy_setting/:shortcode_id", PageController, :toggle_privates
     post "/sort_by/:sort_term", PageController, :sort_order_by
+
+    get "/list", ListPageController, :index
   end
 
   # Other scopes may use custom stacks.

@@ -1,0 +1,21 @@
+<section class="row">
+
+  <article class="column">
+<h2 class="text-center mt-4">Most Recent Links</h2>
+
+    <table>
+      <tr>
+        <th>url</th>
+        <th>code</th>
+      </tr>
+      <%= for b <- @bookmark do %>
+        <tr>
+          <th><%= b.url %></th>
+          <th><%= link("#{b.code}", to: URI.parse("#{b.url}")) %></th>
+        </tr>
+      <% end %>
+    </table>
+  </article>
+</section>
+
+

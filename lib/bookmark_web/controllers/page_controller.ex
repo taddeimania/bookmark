@@ -5,7 +5,6 @@ defmodule BookmarkWeb.PageController do
   import Ecto.Query
 
   def index(conn, _params) when conn.assigns.current_user |> is_nil() do
-
     render(
       conn,
       "nonlogged_index.html",
@@ -21,7 +20,7 @@ defmodule BookmarkWeb.PageController do
     )
   end
 
-#do i need to guard against nonlogged users now that the template doesn't show delete/private options?
+  # do i need to guard against nonlogged users now that the template doesn't show delete/private options?
   def delete(conn, _params) when conn.assigns.current_user |> is_nil() do
     conn
     |> put_flash(:error, "Don't touch that you non-logged in user, you.")
@@ -88,7 +87,6 @@ defmodule BookmarkWeb.PageController do
         private: false
       })
     else
-
       Ecto.Changeset.change(record, %{
         url: record.url,
         code: record.code,
@@ -102,19 +100,18 @@ defmodule BookmarkWeb.PageController do
   end
 
   def sort_order_by(conn, params) do
-
     query =
-    case params["sort_term"] do
-      "Date Descending" -> Repo.all(from b in Shortcode, order_by: [desc: b.inserted_at])
-      "Date Ascending" -> Repo.all(from b in Shortcode, order_by: [asc: b.inserted_at])
-    end
+      case params["sort_term"] do
+        "Date Descending" -> Repo.all(from b in Shortcode, order_by: [desc: b.inserted_at])
+        "Date Ascending" -> Repo.all(from b in Shortcode, order_by: [asc: b.inserted_at])
+      end
 
     render(
       conn,
       "index.html",
       bookmark: query
     )
+
     redirect(conn, to: Routes.page_path(conn, :index))
   end
-
 end
