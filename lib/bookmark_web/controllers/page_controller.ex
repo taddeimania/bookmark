@@ -1,5 +1,6 @@
 defmodule BookmarkWeb.PageController do
   use BookmarkWeb, :controller
+
   alias Bookmark.{Repo, Shortcode, Helpers}
   import Ecto.Query
 
@@ -8,7 +9,7 @@ defmodule BookmarkWeb.PageController do
     render(
       conn,
       "nonlogged_index.html",
-      bookmark: Repo.all(from b in Shortcode, where: b.private == false)
+      bookmark: Repo.all(from b in Shortcode, where: b.private == false, order_by: b.inserted_at)
     )
   end
 
@@ -16,7 +17,7 @@ defmodule BookmarkWeb.PageController do
     render(
       conn,
       "index.html",
-      bookmark: Repo.all(from(b in Shortcode))
+      bookmark: Repo.all(from b in Shortcode, order_by: b.inserted_at)
     )
   end
 
@@ -99,4 +100,21 @@ defmodule BookmarkWeb.PageController do
 
     redirect(conn, to: Routes.page_path(conn, :index))
   end
+
+  def sort_order_by(conn, params) do
+
+    query =
+    case params["sort_term"] do
+      "Date Descending" -> Repo.all(from b in Shortcode, order_by: [desc: b.inserted_at])
+      "Date Ascending" -> Repo.all(from b in Shortcode, order_by: [asc: b.inserted_at])
+    end
+
+    render(
+      conn,
+      "index.html",
+      bookmark: query
+    )
+    redirect(conn, to: Routes.page_path(conn, :index))
+  end
+
 end

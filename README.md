@@ -14,13 +14,16 @@ make proj with db that stores bookmark, code, url, name
   ~~scoped by user~~
   ~~guard against nil user~~
 
-  what does a non logged in user see, only public bookmarks?
-
 ~~Ability for a user to set a bookmark as public/private~~
+
+~~order by inserted_at descending/ascending~~
 
 A list page showing all of the most recent bookmarks (like a feed)
 
 A list page showing the top 20 most popular links calculated by clicks
+  Dropdown to sort links by All, Current User, Top 20
+
+Pagination
 
 A details page for a bookmark so a user can see what kind of analytics exist for a bookmark. (How many times it's been clicked mostly, maybe even a time series breakdown of popular times of day it's used)
 

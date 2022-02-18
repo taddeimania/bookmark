@@ -1,12 +1,37 @@
-<%# <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" rel="stylesheet"/> <!--- This line is just linking the bootstrap thingie in the file. The real thing starts below --> %>
 <section class="row">
   <article class="column">
     <h2>Simply Bookmarkery</h2>
     <h5>Handcrafted Awesomeness</h5>
     <table>
       <tr>
+        <th>
+          <div class="dropdown">
+            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              Sort them all
+            </button>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+              <a class="dropdown-item" href="#">
+              <%= form_for @conn, Routes.page_path(@conn, :sort_order_by, "Date Descending"), fn _f -> %>
+                <%= submit do: "Date Descending" %>
+              <% end %></a>
+              <a class="dropdown-item" href="#">
+              <%= form_for @conn, Routes.page_path(@conn, :sort_order_by, "Date Ascending"), fn _f -> %>
+                <%= submit do: "Date Ascending" %>
+              <% end %></a>
+
+
+
+              <%# <a class="dropdown-item" href="#" phx-click="sort_order_by" phx-value-sort_term="Date Ascending">Date Ascending</a>
+              <a class="dropdown-item" href="#" phx-click="sort_order_by" phx-value-sort_term="All Users">All Users</a>
+              <a class="dropdown-item" href="#" phx-click="sort_order_by" phx-value-sort_term="Current User">Current User</a>
+              <a class="dropdown-item" href="#" phx-click="sort_order_by" phx-value-sort_term="Top 20 Bookmarks">Top 20 Bookmarks</a> %>
+
+            </div>
+          </div>
+        </th>
         <th>url</th>
         <th>code</th>
+        <th></th>
       </tr>
       <%= for b <- @bookmark do %>
         <tr>
