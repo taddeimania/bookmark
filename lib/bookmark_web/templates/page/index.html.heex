@@ -1,48 +1,66 @@
-<section class="row">
-  <article class="column">
+
+  <h2 class="text-center mt-4">Large Pile of Links</h2>
+
+  <div class="nav-item dropdown float-right">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          Sort'em
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+          <a class="dropdown-item"><%= form_for @conn, Routes.page_path(@conn, :sort_order_by, "Date Descending"), fn _f -> %>
+            <%= submit do: "Date Descending" %>
+          <% end %></a>
+        <a class="dropdown-item"><%= form_for @conn, Routes.page_path(@conn, :sort_order_by, "Date Ascending"), fn _f -> %>
+          <%= submit do: "Date Ascending" %>
+        <% end %></a>
+    </div>
+  </div>
     <table>
       <tr>
-        <th>
-
-        </th>
+        <th></th>
         <th>url</th>
         <th>code</th>
-        <th></th>
+        <th>count</th>
       </tr>
       <%= for b <- @bookmark do %>
-        <tr>
-          <th>
-            <%= if b.private do %>
-              <%= form_for @conn, Routes.page_path(@conn, :toggle_privates, b.id), fn _f -> %>
-                <%= submit do: "Public-ize" %>
-              <% end %>
-            <% else %>
-              <%= form_for @conn, Routes.page_path(@conn, :toggle_privates, b.id), fn _f -> %>
-                <%= submit do: "Privatize" %>
-              <% end %>
+      <tr>
+        <td>
+          <%= if b.private do %>
+            <%= form_for @conn, Routes.page_path(@conn, :toggle_privates, b.id), fn _f -> %>
+              <%= submit do: "Public-ize" %>
             <% end %>
-          </th>
-          <th><%= b.url %></th>
-          <th><%= link("#{b.code}", to: URI.parse("#{b.url}")) %></th>
-          <th>
-            <%= form_for @conn, Routes.page_path(@conn, :delete, b.id), fn _f -> %>
-              <%= submit do: "Delete" %>
+          <% else %>
+            <%= form_for @conn, Routes.page_path(@conn, :toggle_privates, b.id), fn _f -> %>
+              <%= submit do: "Privatize" %>
             <% end %>
-          </th>
-        </tr>
-      <% end %>
-    </table>
-  </article>
-</section>
-<section>
+          <% end %>
+        </td>
+      <td><%= b.url %></td>
+      <td>
+        <%= link  to: Routes.page_path(@conn, :redirector,  b.id, url: b.url, count: b.click_count, target: "_blank",
+          rel: "noopener noreferrer") do %>
+          <%= b.code %>
+        <% end %>
+      </td>
+      <td><%= b.click_count %></td>
+      <td>
+        <%= form_for @conn, Routes.page_path(@conn, :delete, b.id), fn _f -> %>
+          <%= submit do: "Delete" %>
+        <% end %>
+      </td>
+    </tr>
+    <% end %>
+</table>
+<%= form_for @conn, Routes.page_path(@conn, :create), fn f -> %>
   <div class="container">
-    <%= form_for @conn, Routes.page_path(@conn, :create), fn f -> %>
-    <div class="col">
-      <%= url_input f, :url, placeholder: "url" %>
+    <div class="row">
+      <div class="col-9">
+        <%= url_input f, :url, placeholder: "url" %>
+      </div>
+      <div class="col">
+        <%= submit "Launch Torpedos!" %>
+      </div>
     </div>
-    <div class="col">
-      <%= submit "Launch Torpedos!" %>
-    </div>
-  <% end %>
-</div>
-</section>
+  </div>
+<% end %>
+
+

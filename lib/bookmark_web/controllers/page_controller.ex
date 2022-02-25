@@ -58,7 +58,8 @@ defmodule BookmarkWeb.PageController do
       "url" => params["url"],
       "code" => code,
       "created_by" => user_id,
-      "private" => true
+      "private" => false,
+      "click_count" => 0
     })
     |> Repo.insert()
 
@@ -66,8 +67,9 @@ defmodule BookmarkWeb.PageController do
   end
 
   def redirector(conn, params) do
-    url = Helpers.code_to_url(params["page"])
-    redirect(conn, external: url.url)
+    increment_count(conn, params)
+    url = params["url"]
+    redirect(conn, external: url)
   end
 
   def toggle_privates(conn, _params) when conn.assigns.current_user |> is_nil() do
@@ -104,6 +106,7 @@ defmodule BookmarkWeb.PageController do
       case params["sort_term"] do
         "Date Descending" -> Repo.all(from b in Shortcode, order_by: [desc: b.inserted_at])
         "Date Ascending" -> Repo.all(from b in Shortcode, order_by: [asc: b.inserted_at])
+        "Popularity" -> Repo.all(from b in Shortcode, order_by: [desc: b.click_count])
       end
 
     render(
@@ -113,5 +116,11 @@ defmodule BookmarkWeb.PageController do
     )
 
     redirect(conn, to: Routes.page_path(conn, :index))
+  end
+
+  def increment_count(conn, params) do
+    item = Repo.get!(Shortcode, params["id"])
+    item = Ecto.Changeset.change item, click_count: String.to_integer(params["count"]) + 1
+    Repo.update(item)
   end
 end
