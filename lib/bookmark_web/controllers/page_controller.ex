@@ -16,8 +16,6 @@ defmodule BookmarkWeb.PageController do
   end
 
   def index(conn, _params) do
-    IO.inspect("INDEXXXXXXXXXXXXXXXXXXXXXXXXXXXXxx")
-
     render(
       conn,
       "index.html",
