@@ -21,13 +21,16 @@ defmodule BookmarkWeb.Router do
     pipe_through :browser
 
     get "/", PageController, :index
+
+    # get "/pages/:pagessss_number", PageController, :index
     post "/", PageController, :create
+    # get "/pages/:page", PageController, :show
     get "/pages/:id", PageController, :redirector
     post "/delete/:to_be_deleted", PageController, :delete
     post "/privacy_setting/:shortcode_id", PageController, :toggle_privates
     post "/sort_by/:sort_term", PageController, :sort_order_by
 
-    # get "/count/:count", PageController, :increment_count
+    get "/page/:page", PageController, :change_page
 
     get "/list", ListPageController, :index
     post "/list_sort_by/:sort_term", ListPageController, :sort_order_by

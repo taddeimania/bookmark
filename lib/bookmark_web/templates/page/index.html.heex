@@ -62,5 +62,21 @@
     </div>
   </div>
 <% end %>
+<div class="container">
+  <div class="row">
+    <div class="mx-2">
+      <%= link  to: Routes.page_path(@conn, :change_page, @page_number || 0, page_up: 1) do %>
+        <p>Next 5</p>
+      <% end %>
+    </div>
+    <div class="mx-2">
+      <%= if @page_number > 0 do %>
+        <%= link  to: Routes.page_path(@conn, :change_page, @page_number, page_up: 0) do %>
+          <p>Previous 5</p>
+        <% end %>
+      <% end %>
+    </div>
+  </div>
+</div>
 
 

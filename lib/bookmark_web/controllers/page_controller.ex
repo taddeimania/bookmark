@@ -8,15 +8,21 @@ defmodule BookmarkWeb.PageController do
     render(
       conn,
       "nonlogged_index.html",
-      bookmark: Repo.all(from b in Shortcode, where: b.private == false, order_by: b.inserted_at)
+      bookmark:
+        Repo.all(
+          from b in Shortcode, where: b.private == false, order_by: b.inserted_at, limit: 5
+        )
     )
   end
 
   def index(conn, _params) do
+    IO.inspect("INDEXXXXXXXXXXXXXXXXXXXXXXXXXXXXxx")
+
     render(
       conn,
       "index.html",
-      bookmark: Repo.all(from b in Shortcode, order_by: b.inserted_at)
+      page_number: 0,
+      bookmark: Repo.all(from b in Shortcode, order_by: b.inserted_at, limit: 5)
     )
   end
 
@@ -104,9 +110,11 @@ defmodule BookmarkWeb.PageController do
   def sort_order_by(conn, params) do
     query =
       case params["sort_term"] do
-        "Date Descending" -> Repo.all(from b in Shortcode, order_by: [desc: b.inserted_at])
-        "Date Ascending" -> Repo.all(from b in Shortcode, order_by: [asc: b.inserted_at])
-        "Popularity" -> Repo.all(from b in Shortcode, order_by: [desc: b.click_count])
+        "Date Descending" ->
+          Repo.all(from b in Shortcode, order_by: [desc: b.inserted_at])
+
+        "Date Ascending" ->
+          Repo.all(from b in Shortcode, order_by: [asc: b.inserted_at])
       end
 
     render(
@@ -114,13 +122,34 @@ defmodule BookmarkWeb.PageController do
       "index.html",
       bookmark: query
     )
-
-    redirect(conn, to: Routes.page_path(conn, :index))
   end
 
-  def increment_count(conn, params) do
+  def increment_count(_conn, params) do
     item = Repo.get!(Shortcode, params["id"])
-    item = Ecto.Changeset.change item, click_count: String.to_integer(params["count"]) + 1
+    item = Ecto.Changeset.change(item, click_count: String.to_integer(params["count"]) + 1)
     Repo.update(item)
+  end
+
+  def change_page(conn, params) do
+    page_up = params["page_up"]
+
+    new_page_number =
+      if page_up == "1" do
+        String.to_integer(params["page"]) + 1
+      else
+        String.to_integer(params["page"]) - 1
+      end
+
+    offset = 5 * new_page_number
+
+    query = Repo.all(from b in Shortcode, limit: 5, offset: ^offset)
+
+    render(
+      conn,
+      "index.html",
+      page_number: new_page_number,
+      bookmark: query,
+      page_up: page_up
+    )
   end
 end
