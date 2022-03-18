@@ -34,7 +34,6 @@ defmodule BookmarkWeb.Router do
 
     get "/list", ListPageController, :index
     post "/list_sort_by/:sort_term", ListPageController, :sort_order_by
-
   end
 
   # Other scopes may use custom stacks.

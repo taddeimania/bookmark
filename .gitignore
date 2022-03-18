@@ -32,3 +32,5 @@ bookmark-*.tar
 npm-debug.log
 /assets/node_modules/
 
+*.iml
+.idea/

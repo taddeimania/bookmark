@@ -1,4 +1,4 @@
-defmodule Bookmark.Shortcode do
+defmodule Bookmark.Shortcodes.ShortCode do
   use Ecto.Schema
   import Ecto.Changeset
 

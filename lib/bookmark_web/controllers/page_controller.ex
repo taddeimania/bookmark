@@ -1,7 +1,7 @@
 defmodule BookmarkWeb.PageController do
   use BookmarkWeb, :controller
 
-  alias Bookmark.{Repo, Shortcode, Helpers}
+  alias Bookmark.{Repo, Shortcodes.ShortCode, Helpers}
   import Ecto.Query
 
   def index(conn, _params) when conn.assigns.current_user |> is_nil() do
@@ -10,7 +10,7 @@ defmodule BookmarkWeb.PageController do
       "nonlogged_index.html",
       bookmark:
         Repo.all(
-          from b in Shortcode, where: b.private == false, order_by: b.inserted_at, limit: 5
+          from b in ShortCode, where: b.private == false, order_by: b.inserted_at, limit: 5
         )
     )
   end
@@ -20,7 +20,7 @@ defmodule BookmarkWeb.PageController do
       conn,
       "index.html",
       page_number: 0,
-      bookmark: Repo.all(from b in Shortcode, order_by: b.inserted_at, limit: 5)
+      bookmark: Repo.all(from b in ShortCode, order_by: b.inserted_at, limit: 5)
     )
   end
 
@@ -33,10 +33,10 @@ defmodule BookmarkWeb.PageController do
 
   def delete(conn, params) do
     user_id = conn.assigns.current_user.id
-    ptbd = Repo.get(Shortcode, params["to_be_deleted"])
+    ptbd = Repo.get(ShortCode, params["to_be_deleted"])
 
     if ptbd.created_by == user_id do
-      query = Repo.get_by(Shortcode, id: params["to_be_deleted"])
+      query = Repo.get_by(ShortCode, id: params["to_be_deleted"])
       Repo.delete(query)
     else
       conn
@@ -57,8 +57,8 @@ defmodule BookmarkWeb.PageController do
     code = Helpers.generate()
     user_id = conn.assigns.current_user.id
 
-    %Shortcode{}
-    |> Shortcode.changeset(%{
+    %ShortCode{}
+    |> ShortCode.changeset(%{
       "url" => params["url"],
       "code" => code,
       "created_by" => user_id,
@@ -83,7 +83,7 @@ defmodule BookmarkWeb.PageController do
   end
 
   def toggle_privates(conn, params) do
-    record = Repo.get(Shortcode, params["shortcode_id"])
+    record = Repo.get(ShortCode, params["shortcode_id"])
 
     if record.private do
       Ecto.Changeset.change(record, %{
@@ -109,10 +109,10 @@ defmodule BookmarkWeb.PageController do
     query =
       case params["sort_term"] do
         "Date Descending" ->
-          Repo.all(from b in Shortcode, order_by: [desc: b.inserted_at])
+          Repo.all(from b in ShortCode, order_by: [desc: b.inserted_at])
 
         "Date Ascending" ->
-          Repo.all(from b in Shortcode, order_by: [asc: b.inserted_at])
+          Repo.all(from b in ShortCode, order_by: [asc: b.inserted_at])
       end
 
     render(
@@ -123,7 +123,7 @@ defmodule BookmarkWeb.PageController do
   end
 
   def increment_count(_conn, params) do
-    item = Repo.get!(Shortcode, params["id"])
+    item = Repo.get!(ShortCode, params["id"])
     item = Ecto.Changeset.change(item, click_count: String.to_integer(params["count"]) + 1)
     Repo.update(item)
   end
@@ -140,7 +140,7 @@ defmodule BookmarkWeb.PageController do
 
     offset = 5 * new_page_number
 
-    query = Repo.all(from b in Shortcode, limit: 5, offset: ^offset)
+    query = Repo.all(from b in ShortCode, limit: 5, offset: ^offset)
 
     render(
       conn,
