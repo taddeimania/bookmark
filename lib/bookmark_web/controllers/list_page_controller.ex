@@ -1,14 +1,14 @@
 defmodule BookmarkWeb.ListPageController do
   use BookmarkWeb, :controller
 
-  alias Bookmark.{Repo, Shortcodes.ShortCode, Helpers}
+  alias Bookmark.{Repo, Shortcodes, Shortcodes.ShortCode, Helpers}
   import Ecto.Query
 
   def index(conn, _params) do
     render(
       conn,
       "index.html",
-      bookmark: Repo.all(from b in ShortCode, where: b.private == false, order_by: b.inserted_at)
+      bookmark: Shortcodes.list_public_shortcodes()
     )
   end
 
@@ -16,17 +16,13 @@ defmodule BookmarkWeb.ListPageController do
     query =
       case params["sort_term"] do
         "All" ->
-          Repo.all(from b in ShortCode, order_by: [desc: b.inserted_at])
+          Shortcodes.list_shortcodes()
 
         "Current User" ->
-          Repo.all(
-            from b in ShortCode,
-              where: b.created_by == ^conn.assigns.current_user.id,
-              order_by: [desc: b.inserted_at]
-          )
+          Shortcodes.list_shortcodes_for_user_id(conn.assigns.current_user.id)
 
         "Popularity" ->
-          Repo.all(from b in ShortCode, order_by: [desc: b.click_count], limit: 10)
+          Shortcodes.list_popular_shortcodes()
       end
 
     render(
